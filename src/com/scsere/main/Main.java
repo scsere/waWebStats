@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.firefox.internal.ProfilesIni;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -33,17 +34,30 @@ public class Main {
         //Go to WA-web
         webDriver.get(WA_WEB_URL);
 
-
+        //Wait until web app is ready
         loadInterface(webDriver);
 
+        //Fetch all available contacts
         List<Contact> contacts = getAllContacts(webDriver);
-
+        //Print all contacts and read user choice
         printContacts(contacts);
         int selectedContactIndex = selectContact();
 
         System.out.println("Selected: " + contacts.get(selectedContactIndex).getContactName());
 
+        //Open chat window for selected contact
+        openContactChat(contacts.get(selectedContactIndex));
+        //Get the chat frame
+        ChatFrame chatFrame = new ChatFrame(webDriver.findElement(By.id("main")));
+
+        System.out.println(chatFrame.getLastSeenTime());
+
         while (true) ;
+    }
+
+    private static void openContactChat(Contact contact) {
+        if (contact != null)
+            contact.getWebElement().click();
     }
 
     private static int selectContact() {
@@ -77,6 +91,7 @@ public class Main {
     }
 
     public static List<Contact> getAllContacts(WebDriver webDriver) {
+        //TODO: Scroll down to trigger reload of contact list
         List<Contact> contacts = new ArrayList<>();
         for (WebElement element : webDriver.findElements(By.cssSelector(".infinite-list-item, .infinite-list-item-transition")))
             contacts.add(new Contact(element));
