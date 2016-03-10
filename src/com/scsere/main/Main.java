@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.firefox.internal.ProfilesIni;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -24,7 +23,7 @@ public class Main {
     public static final String WA_WEB_URL = "https://web.whatsapp.com/";
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        System.out.println("Loading web driver ...");
 
         //Load selenium profile
         ProfilesIni profile = new ProfilesIni();
@@ -51,6 +50,8 @@ public class Main {
         ChatFrame chatFrame = new ChatFrame(webDriver.findElement(By.id("main")));
 
         System.out.println(chatFrame.getLastSeenTime());
+
+        chatFrame.startOnlineListener();
 
         while (true) ;
     }
