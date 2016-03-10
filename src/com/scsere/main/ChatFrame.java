@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class ChatFrame {
     private WebElement frame;
+    private OnlineListener onlineListener;
 
     public ChatFrame(WebElement frame) {
         this.frame = frame;
@@ -18,6 +19,14 @@ public class ChatFrame {
 
     public String getLastSeenTime(){
         return frame.findElement(By.cssSelector("div.chat-status:nth-child(2)")).getText();
+    }
+
+    public void startOnlineListener(){
+        onlineListener = new OnlineListener(frame.findElement(By.cssSelector("div.chat-status:nth-child(2)")), frame.findElement(By.cssSelector("div.input")), frame);
+    }
+
+    public void stopOnlineListener(){
+        onlineListener.setActive(false);
     }
 
     public List<Message> getMessages(){
