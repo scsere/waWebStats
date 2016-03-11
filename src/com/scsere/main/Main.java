@@ -73,7 +73,7 @@ public class Main {
         System.out.println("Contacts:");
         for (int i = 0, contactsSize = contacts.size(); i < contactsSize; i++) {
             Contact contact = contacts.get(i);
-            System.out.println("\t[" + i + "}" + contact.getContactName() + "\tlast msg:" + contact.getContactMeta());
+            System.out.println("\t[" + i + "] " + contact.getContactName() + "\t\t\tlast msg:" + contact.getContactMeta());
         }
     }
 
