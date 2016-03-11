@@ -60,6 +60,15 @@ public class ChatFrame {
         return true;
     }
 
+    public boolean sendText(String textToSend){
+        //Find input element
+        final List<WebElement> inputElements = frame.findElements(By.cssSelector("div.input"));
+        if (inputElements.isEmpty())
+            return false;
+        inputElements.get(0).sendKeys(textToSend+ "\n");
+        return true;
+    }
+
     public List<Message> getMessages() {
         List<Message> messageList = new ArrayList<>();
         WebElement messageListElement = frame.findElement(By.cssSelector(".message-list"));
