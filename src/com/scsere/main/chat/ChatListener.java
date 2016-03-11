@@ -1,6 +1,4 @@
-package com.scsere.main.listeners;
-
-import com.scsere.main.Message;
+package com.scsere.main.chat;
 
 /**
  * Created by scsere on 11/03/16.

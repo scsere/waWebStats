@@ -1,7 +1,9 @@
 package com.scsere.main;
 
-import com.scsere.main.listeners.ChatListener;
-import org.apache.xpath.SourceTree;
+import com.scsere.main.chat.ChatFrame;
+import com.scsere.main.chat.ChatListener;
+import com.scsere.main.chat.Message;
+import com.scsere.main.contacts.Contact;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

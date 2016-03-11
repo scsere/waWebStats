@@ -1,6 +1,5 @@
-package com.scsere.main;
+package com.scsere.main.chat;
 
-import com.scsere.main.listeners.ChatListener;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 

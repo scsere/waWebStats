@@ -1,4 +1,4 @@
-package com.scsere.main;
+package com.scsere.main.chat;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
