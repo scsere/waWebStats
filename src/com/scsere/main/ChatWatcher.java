@@ -2,6 +2,7 @@ package com.scsere.main;
 
 import com.scsere.main.listeners.ChatListener;
 import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
@@ -68,7 +69,15 @@ public class ChatWatcher extends Thread {
     }
 
     private void checkStatus() {
-        String currentText = parent.getStatusElement().getText();
+        final WebElement statusElement = parent.getStatusElement();
+        //In case status element disappeared
+        if (statusElement == null){
+            lastState = null;
+            return;
+        }
+
+
+        String currentText = statusElement.getText();
         if (!currentText.equals(lastState)) {
             for (ChatListener listener : parent.listeners)
                 listener.onStatusChanged(currentText);
