@@ -33,9 +33,12 @@ public class ChatFrame {
     public List<Message> getMessages() {
         List<Message> messageList = new ArrayList<>();
         WebElement messageListElement = frame.findElement(By.cssSelector(".message-list"));
-        for (WebElement singleMessage : messageListElement.findElements(By.className("msg")))
-            messageList.add(Message.getMessageFromMsgElement(singleMessage));
-        return messageList;
+        for (WebElement singleMessage : messageListElement.findElements(By.className("msg"))) {
+            Message msg = Message.getMessageFromMsgElement(singleMessage);
+            if (msg != null)
+                messageList.add(msg);
+        }
+        return messageList.size() > 0 ? messageList : null;
     }
 
     public WebElement getFrame() {

@@ -56,9 +56,14 @@ public class Message {
     public static Message getMessageFromMsgElement(WebElement msgElement){
         if (msgElement ==  null)
             return null;
+        //Check if it's a system message without text
+        if (!msgElement.findElements(By.cssSelector("div.message span.message-system-body")).isEmpty()) {
+            System.out.println("System message");
+            return null;
+        }
         String text = msgElement.findElement(By.cssSelector("div.message div.bubble div.message-text span.emojitext")).getText();
         String timestamp = msgElement.findElement(By.cssSelector(".message-datetime")).getText();
-        List<WebElement> children = null;
+        List<WebElement> children = null; //TODO: Find messages child elements such as links or emoticons
 
         return new Message(text, children, timestamp);
     }
