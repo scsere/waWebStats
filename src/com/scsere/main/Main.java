@@ -1,5 +1,7 @@
 package com.scsere.main;
 
+import com.scsere.main.listeners.ChatListener;
+import org.apache.xpath.SourceTree;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -51,7 +53,21 @@ public class Main {
 
         System.out.println(chatFrame.getLastSeenTime());
 
-        chatFrame.startOnlineListener();
+        chatFrame.registerChatListener(new ChatListener() {
+            @Override
+            public void onStatusChanged(String newStatus) {
+                System.out.println("Status changed: " + newStatus);
+            }
+
+            @Override
+            public void onNewMessage(Message message) {
+            }
+
+            @Override
+            public void onNewIncomingMessage(Message incomingMessage) {
+                System.out.println("New incoming message: " + incomingMessage);
+            }
+        });
 
         while (true) ;
     }
