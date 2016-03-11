@@ -2,7 +2,7 @@
 
 API to interact with whatsapp web client using the Selenium lib.
 
-### Setup
+## Setup
 
 Create a new profile for your browser.
 Firefox e.g.:
@@ -11,3 +11,16 @@ firefox -p
 ```
 
 go to http://web.whatsapp.com and scan the QR code with your phone, close the browser, done.
+
+## Use
+
+```java 
+//To Initialize the api:
+WaWebStats waWeb = new WaWebStats("profileName"); //Leave empty for default "SELENIUM"
+
+//Load the driver e.g. Firefox
+waWeb.initFirefox();
+```
+
+## Examples
+For an example program see Main.java
