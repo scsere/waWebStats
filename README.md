@@ -9,7 +9,8 @@ Create a new profile for your browser e.g. Firefox:
 firefox -p
 ```
 
-go to http://web.whatsapp.com and scan the QR code with your phone, close the browser, done.
+go to http://web.whatsapp.com, make sure the 'remember me' checkbox is checked and scan the QR code with your phone, close the browser, done.
+In case of problems make sure the browser keeps the session cookie required to authenticate.
 
 ## Use
 
@@ -24,5 +25,5 @@ waWeb.initFirefox();
 ## Examples
 For example programs see the com.scsere.examples package:
 
-+ EchoServer
-+ Logger
++ EchoServer.java
++ Logger.java
