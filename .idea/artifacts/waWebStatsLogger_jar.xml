@@ -1,7 +1,10 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="waWebStats:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/waWebStats_jar</output-path>
+  <artifact type="jar" name="waWebStatsLogger:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/waWebStatsLogger_jar</output-path>
     <root id="archive" name="waWebStats.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/resources/Logger/META-INF/MANIFEST.MF" />
+      </element>
       <element id="module-output" name="waWebStats" />
       <element id="extracted-dir" path="$PROJECT_DIR$/libs/selenium-2.52.0/libs/apache-mime4j-0.6.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/libs/selenium-2.52.0/libs/bsh-2.0b4.jar" path-in-jar="/" />
