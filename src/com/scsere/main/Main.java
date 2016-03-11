@@ -4,16 +4,7 @@ import com.scsere.main.chat.ChatFrame;
 import com.scsere.main.chat.ChatListener;
 import com.scsere.main.chat.Message;
 import com.scsere.main.contacts.Contact;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.firefox.internal.ProfilesIni;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -27,21 +18,12 @@ public class Main {
     public static final String WA_WEB_URL = "https://web.whatsapp.com/";
 
     public static void main(String[] args) {
-        System.out.println("Loading web driver ...");
+        WaWebStats webStats = new WaWebStats();
 
-        //Load selenium profile
-        ProfilesIni profile = new ProfilesIni();
-        FirefoxProfile ffprofile = profile.getProfile("SELENIUM");
-        WebDriver webDriver = new FirefoxDriver(ffprofile);
-
-        //Go to WA-web
-        webDriver.get(WA_WEB_URL);
-
-        //Wait until web app is ready
-        loadInterface(webDriver);
+        webStats.initFirefox();
 
         //Fetch all available contacts
-        List<Contact> contacts = getAllContacts(webDriver);
+        List<Contact> contacts = webStats.getContacts();
         //Print all contacts and read user choice
         printContacts(contacts);
         int selectedContactIndex = selectContact();
@@ -49,11 +31,7 @@ public class Main {
         System.out.println("Selected: " + contacts.get(selectedContactIndex).getContactName());
 
         //Open chat window for selected contact
-        openContactChat(contacts.get(selectedContactIndex));
-        //Get the chat frame
-        ChatFrame chatFrame = new ChatFrame(webDriver.findElement(By.id("main")));
-
-        System.out.println(chatFrame.getLastSeenTime());
+        ChatFrame chatFrame= webStats.getChatFrameForContact(contacts.get(selectedContactIndex));
 
         chatFrame.registerChatListener(new ChatListener() {
             @Override
@@ -74,10 +52,6 @@ public class Main {
         while (true) ;
     }
 
-    private static void openContactChat(Contact contact) {
-        if (contact != null)
-            contact.getWebElement().click();
-    }
 
     private static int selectContact() {
         final int i;
@@ -98,23 +72,6 @@ public class Main {
             Contact contact = contacts.get(i);
             System.out.println("\t[" + i + "}" + contact.getContactName() + "\tlast msg:" + contact.getContactMeta());
         }
-    }
-
-    private static void loadInterface(WebDriver webDriver) {
-        WebElement element = (new WebDriverWait(webDriver, 20))
-                .until(ExpectedConditions.elementToBeClickable(By.className("pane-list-user")));
-        if (element == null) {
-            System.err.println("WA-Web was not logging in");
-            System.exit(1);
-        }
-    }
-
-    public static List<Contact> getAllContacts(WebDriver webDriver) {
-        //TODO: Scroll down to trigger reload of contact list
-        List<Contact> contacts = new ArrayList<>();
-        for (WebElement element : webDriver.findElements(By.cssSelector(".infinite-list-item, .infinite-list-item-transition")))
-            contacts.add(new Contact(element));
-        return contacts;
     }
 
 }
