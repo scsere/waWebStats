@@ -27,3 +27,8 @@ For example programs see the com.scsere.examples package:
 
 + EchoServer.java
 + Logger.java
+
+To run the example programs first build the artifacts then go to out/artifacts/<artifact name> (be sure to configure a profile for your browser first)
+```bash
+java -jar <artifact name>.jar
+```
