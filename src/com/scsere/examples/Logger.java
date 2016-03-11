@@ -1,13 +1,12 @@
-package com.scsere.main;
+package com.scsere.examples;
 
+import com.scsere.main.WaWebStats;
 import com.scsere.main.chat.ChatFrame;
 import com.scsere.main.chat.ChatListener;
 import com.scsere.main.chat.Message;
 import com.scsere.main.contacts.Contact;
 
-import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * Created by scsere on 10/03/16.
@@ -16,7 +15,7 @@ import java.util.Scanner;
  * contact and reports any changes in status
  * or new messages.
  */
-public class Main {
+public class Logger {
 
     public static final String WA_WEB_URL = "https://web.whatsapp.com/";
 
@@ -28,8 +27,8 @@ public class Main {
         //Fetch all available contacts
         List<Contact> contacts = webStats.getContacts();
         //Print all contacts and read user choice
-        printContacts(contacts);
-        int selectedContactIndex = selectContact();
+        Utils.printContacts(contacts);
+        int selectedContactIndex = Utils.selectContact();
 
         System.out.println("Selected: " + contacts.get(selectedContactIndex).getContactName());
 
@@ -44,6 +43,8 @@ public class Main {
 
             @Override
             public void onNewMessage(Message message) {
+                if (message.getType() == Message.MessageType.OUT)
+                    System.out.println("New outgoing message: " + message.getText());
             }
 
             @Override
@@ -54,27 +55,4 @@ public class Main {
 
         while (true) ;
     }
-
-
-    private static int selectContact() {
-        final int i;
-        try {
-            System.out.print("Select a contact:");
-            i = new Scanner(System.in).nextInt();
-        } catch (InputMismatchException e) {
-            System.out.println("Please enter a valid number");
-            //TODO: Remove recursive call
-            return selectContact();
-        }
-        return i;
-    }
-
-    private static void printContacts(List<Contact> contacts) {
-        System.out.println("Contacts:");
-        for (int i = 0, contactsSize = contacts.size(); i < contactsSize; i++) {
-            Contact contact = contacts.get(i);
-            System.out.println("\t[" + i + "] " + contact.getContactName() + "\t\t\tlast msg:" + contact.getContactMeta());
-        }
-    }
-
 }

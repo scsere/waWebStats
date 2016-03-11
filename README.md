@@ -22,4 +22,7 @@ waWeb.initFirefox();
 ```
 
 ## Examples
-For an example program see Main.java
+For example programs see the com.scsere.examples package:
+
++ EchoServer
++ Logger
