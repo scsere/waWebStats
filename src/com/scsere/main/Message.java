@@ -47,10 +47,10 @@ public class Message {
 
     @Override
     public String toString() {
-        return "Message{\n" +
+        return "\nMessage{\n" +
                 "\ttimestamp='" + timestamp + '\'' +
                 ", \n\ttext='" + text + '\'' +
-                "\n}";
+                "}";
     }
 
     public static Message getMessageFromMsgElement(WebElement msgElement){
