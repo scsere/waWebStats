@@ -1,9 +1,9 @@
 package com.scsere.main;
 
+import com.scsere.main.listeners.ChatListener;
 import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.WebElement;
 
-import java.util.Date;
+import java.util.List;
 
 /**
  * Created by scsere on 10/03/16.
@@ -11,14 +11,26 @@ import java.util.Date;
  */
 public class ChatWatcher extends Thread {
 
-    private WebElement element;
-    private String lastState = "";
-    private int interval = 100;
+    public final int DEFAULT_INTERVAL = 500;
+
+    private ChatFrame parent;
+    private int interval = DEFAULT_INTERVAL;
     private volatile boolean active = true;
 
-    public ChatWatcher(WebElement element) {
+    private String lastState;
+    private Message lastMessage = null;
+
+    public ChatWatcher(ChatFrame parent) {
         super();
-        this.element = element;
+        this.parent = parent;
+
+        //Init "last" fields
+        lastState = "";
+        lastMessage = parent.getMessages().get(parent.getMessages().size() - 1);
+
+        assert lastMessage != null;
+
+        this.setDaemon(true);
         this.start();
     }
 
@@ -26,20 +38,41 @@ public class ChatWatcher extends Thread {
     public void run() {
         while (active) {
             try {
-                String currentText = element.getText();
-                if (!currentText.equals(lastState)) {
-                    System.out.println(new Date().toString() + ": " + currentText);
-                    lastState = currentText;
-                }
+
+                checkStatus();
+                checkMessages();
 
                 try {
                     Thread.sleep(interval);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }catch (StaleElementReferenceException e){
+            } catch (StaleElementReferenceException e) {
                 setActive(false);
+                System.err.println("Lost chatFrame reference (changed chat?)");
             }
+        }
+    }
+
+    private void checkMessages() {
+        final List<Message> messageList = parent.getMessages();
+        final Message currentLastMessage = messageList.get(messageList.size() - 1);
+        if (!lastMessage.equals(currentLastMessage)) {
+            for (ChatListener listener : parent.listeners) {
+                listener.onNewMessage(currentLastMessage);
+                if (currentLastMessage.getType() == Message.MessageType.IN)
+                    listener.onNewIncomingMessage(currentLastMessage);
+            }
+            lastMessage = currentLastMessage;
+        }
+    }
+
+    private void checkStatus() {
+        String currentText = parent.getStatusElement().getText();
+        if (!currentText.equals(lastState)) {
+            for (ChatListener listener : parent.listeners)
+                listener.onStatusChanged(currentText);
+            lastState = currentText;
         }
     }
 

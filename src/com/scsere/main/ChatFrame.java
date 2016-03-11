@@ -1,5 +1,6 @@
 package com.scsere.main;
 
+import com.scsere.main.listeners.ChatListener;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -13,6 +14,7 @@ import java.util.List;
 public class ChatFrame {
     private WebElement frame;
     private ChatWatcher chatWatcher;
+    protected List<ChatListener> listeners = new ArrayList<>();
 
     public ChatFrame(WebElement frame) {
         this.frame = frame;
@@ -22,12 +24,40 @@ public class ChatFrame {
         return frame.findElement(By.cssSelector("div.chat-status:nth-child(2)")).getText();
     }
 
-    public void startOnlineListener(){
-        chatWatcher = new ChatWatcher(frame.findElement(By.cssSelector("div.chat-status:nth-child(2)")));
+    public WebElement getStatusElement(){
+        List<WebElement> elements = frame.findElements(By.cssSelector("div.chat-status:nth-child(2)"));
+        return elements.isEmpty() ? null : elements.get(0);
     }
 
-    public void stopOnlineListener(){
+    private void startChatWatcher() {
+        chatWatcher = new ChatWatcher(this);
+    }
+
+    private void stopChatWatcher() {
         chatWatcher.setActive(false);
+    }
+
+    public void registerChatListener(ChatListener listener) {
+        //Check if it's the first listener
+        if (listeners.isEmpty()) {
+            listeners.add(listener);
+            startChatWatcher();
+        }
+    }
+
+    public boolean detachChatListener(ChatListener listener) {
+        //Check if listener is registered
+        if (!listeners.contains(listener))
+            return false;
+
+        //Remove the listener
+        listeners.remove(listener);
+
+        //Check if it was the last attached listener
+        if (listeners.isEmpty())
+            stopChatWatcher();
+
+        return true;
     }
 
     public List<Message> getMessages() {
