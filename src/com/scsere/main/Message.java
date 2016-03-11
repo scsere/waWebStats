@@ -56,6 +56,19 @@ public class Message {
                 "}";
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Message message = (Message) o;
+
+        if (!text.equals(message.text)) return false;
+        if (!timestamp.equals(message.timestamp)) return false;
+        return type == message.type;
+
+    }
+
     public static Message getMessageFromMsgElement(WebElement msgElement) {
         if (msgElement == null)
             return null;
