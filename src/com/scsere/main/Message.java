@@ -47,6 +47,14 @@ public class Message {
         this.timestamp = timestamp;
     }
 
+    public MessageType getType() {
+        return type;
+    }
+
+    public void setType(MessageType type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "\nMessage{\n" +
@@ -79,8 +87,10 @@ public class Message {
         }
 
         //Get message text, timestamp and child elements
-        String text = msgElement.findElement(By.cssSelector("div.message div.bubble div.message-text span.emojitext")).getText();
-        String timestamp = msgElement.findElement(By.cssSelector(".message-datetime")).getText();
+        List<WebElement> textElements = msgElement.findElements(By.cssSelector("div.message div.bubble div.message-text span.emojitext"));
+        String text = textElements.isEmpty() ? "" : textElements.get(0).getText();
+        List<WebElement> timestampElements = msgElement.findElements(By.cssSelector(".message-datetime"));
+        String timestamp = timestampElements.isEmpty() ? "" : timestampElements.get(0).getText();
         List<WebElement> children = null; //TODO: Find messages child elements such as links or emoticons
 
         //Determine if message is incoming or outgoing
