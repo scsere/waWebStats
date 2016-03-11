@@ -9,14 +9,14 @@ import java.util.Date;
  * Created by scsere on 10/03/16.
  * Project: waWebStats
  */
-public class OnlineListener extends Thread {
+public class ChatWatcher extends Thread {
 
     private WebElement element;
     private String lastState = "";
     private int interval = 100;
     private volatile boolean active = true;
 
-    public OnlineListener(WebElement element) {
+    public ChatWatcher(WebElement element) {
         super();
         this.element = element;
         this.start();
