@@ -1,5 +1,6 @@
 package com.scsere.main;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
@@ -11,12 +12,12 @@ import java.util.List;
 public class Message {
 
     private String text;
-    private List<WebElement> childElemements;
+    private List<WebElement> childElements;
     private String timestamp;
 
-    public Message(String text, List<WebElement> childElemements, String timestamp) {
+    public Message(String text, List<WebElement> childElements, String timestamp) {
         this.text = text;
-        this.childElemements = childElemements;
+        this.childElements = childElements;
         this.timestamp = timestamp;
     }
 
@@ -28,12 +29,12 @@ public class Message {
         this.text = text;
     }
 
-    public List<WebElement> getChildElemements() {
-        return childElemements;
+    public List<WebElement> getChildElements() {
+        return childElements;
     }
 
-    public void setChildElemements(List<WebElement> childElemements) {
-        this.childElemements = childElemements;
+    public void setChildElements(List<WebElement> childElements) {
+        this.childElements = childElements;
     }
 
     public String getTimestamp() {
@@ -50,5 +51,15 @@ public class Message {
                 "\ttimestamp='" + timestamp + '\'' +
                 ", \n\ttext='" + text + '\'' +
                 "\n}";
+    }
+
+    public static Message getMessageFromMsgElement(WebElement msgElement){
+        if (msgElement ==  null)
+            return null;
+        String text = msgElement.findElement(By.cssSelector("div.message div.bubble div.message-text span.emojitext")).getText();
+        String timestamp = msgElement.findElement(By.cssSelector(".message-datetime")).getText();
+        List<WebElement> children = null;
+
+        return new Message(text, children, timestamp);
     }
 }
