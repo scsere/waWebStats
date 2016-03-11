@@ -12,6 +12,9 @@ import java.util.Scanner;
 /**
  * Created by scsere on 10/03/16.
  * Project: waWebStats
+ * Example program that lets you choose a
+ * contact and reports any changes in status
+ * or new messages.
  */
 public class Main {
 
@@ -31,7 +34,7 @@ public class Main {
         System.out.println("Selected: " + contacts.get(selectedContactIndex).getContactName());
 
         //Open chat window for selected contact
-        ChatFrame chatFrame= webStats.getChatFrameForContact(contacts.get(selectedContactIndex));
+        ChatFrame chatFrame = webStats.getChatFrameForContact(contacts.get(selectedContactIndex));
 
         chatFrame.registerChatListener(new ChatListener() {
             @Override
