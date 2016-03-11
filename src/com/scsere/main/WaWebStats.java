@@ -15,22 +15,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Viktor Gobbi on 11/03/16.
+ * Created by scsere on 11/03/16.
  * Project: waWebStats
  */
-public class WaWebStats {
+public class WaWebStats implements Listenable<WhatsAppStatusListener>{
 
     public static final String WA_WEB_URL = "https://web.whatsapp.com/";
     public static String PROFILE_NAME = "SELENIUM";
 
     private WebDriver driver;
-    private boolean interactiveMode = true;
 
     public WaWebStats() {
 
     }
 
-    public WaWebStats(String profileName){
+    public WaWebStats(String profileName) {
         WaWebStats.PROFILE_NAME = profileName;
     }
 
@@ -43,7 +42,7 @@ public class WaWebStats {
         FirefoxProfile ffprofile = profile.getProfile(PROFILE_NAME);
         driver = new FirefoxDriver(ffprofile);
 
-        System.out.println("Going to WhatsApp-Web ("+WA_WEB_URL+")");
+        System.out.println("Going to WhatsApp-Web (" + WA_WEB_URL + ")");
 
         //Go to WA-web
         driver.get(WA_WEB_URL);
@@ -52,7 +51,7 @@ public class WaWebStats {
         waitUntilAppReady(driver);
     }
 
-    public List<Contact> getContacts(){
+    public List<Contact> getContacts() {
         //TODO: Scroll down to trigger reload of contact list
         List<Contact> contacts = new ArrayList<>();
         for (WebElement element : driver.findElements(By.cssSelector(".infinite-list-item, .infinite-list-item-transition")))
@@ -60,16 +59,15 @@ public class WaWebStats {
         return contacts;
     }
 
-    public ChatFrame getChatFrameForContact(Contact contact){
+    public ChatFrame getChatFrameForContact(Contact contact) {
         openChatWindowForContact(contact);
         return new ChatFrame(driver.findElement(By.id("main")));
     }
 
-    public void openChatWindowForContact(Contact contact){
+    public void openChatWindowForContact(Contact contact) {
         if (contact != null)
             contact.getWebElement().click();
     }
-
 
     private static void waitUntilAppReady(WebDriver webDriver) {
         WebElement element = (new WebDriverWait(webDriver, 20))
@@ -80,4 +78,8 @@ public class WaWebStats {
         }
     }
 
+    @Override
+    public List<WhatsAppStatusListener> getListener() {
+        return null;
+    }
 }

@@ -11,5 +11,4 @@ public interface WhatsAppStatusListener {
     void onWhatsappBatteryLow();
 
     void onWhatsappRequestedByOtherApplication();
-
 }

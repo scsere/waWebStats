@@ -9,7 +9,7 @@ import com.scsere.main.contacts.Contact;
 import java.util.List;
 
 /**
- * Created by Viktor Gobbi on 11/03/16.
+ * Created by scsere on 11/03/16.
  * Project: waWebStats
  */
 public class EchoServer {

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Created by Viktor Gobbi on 11/03/16.
+ * Created by scsere on 11/03/16.
  * Project: waWebStats
  */
 public class Utils {
