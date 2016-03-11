@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class ChatFrame {
     private WebElement frame;
-    private OnlineListener onlineListener;
+    private ChatWatcher chatWatcher;
 
     public ChatFrame(WebElement frame) {
         this.frame = frame;
@@ -22,11 +22,11 @@ public class ChatFrame {
     }
 
     public void startOnlineListener(){
-        onlineListener = new OnlineListener(frame.findElement(By.cssSelector("div.chat-status:nth-child(2)")));
+        chatWatcher = new ChatWatcher(frame.findElement(By.cssSelector("div.chat-status:nth-child(2)")));
     }
 
     public void stopOnlineListener(){
-        onlineListener.setActive(false);
+        chatWatcher.setActive(false);
     }
 
     public List<Message> getMessages(){
