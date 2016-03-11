@@ -14,11 +14,13 @@ public class Message {
     private String text;
     private List<WebElement> childElements;
     private String timestamp;
+    private MessageType type;
 
-    public Message(String text, List<WebElement> childElements, String timestamp) {
+    public Message(String text, List<WebElement> childElements, String timestamp, MessageType type) {
         this.text = text;
         this.childElements = childElements;
         this.timestamp = timestamp;
+        this.type = type;
     }
 
     public String getText() {
@@ -50,21 +52,34 @@ public class Message {
         return "\nMessage{\n" +
                 "\ttimestamp='" + timestamp + '\'' +
                 ", \n\ttext='" + text + '\'' +
+                ", \n\ttype='" + type + '\'' +
                 "}";
     }
 
-    public static Message getMessageFromMsgElement(WebElement msgElement){
-        if (msgElement ==  null)
+    public static Message getMessageFromMsgElement(WebElement msgElement) {
+        if (msgElement == null)
             return null;
         //Check if it's a system message without text
         if (!msgElement.findElements(By.cssSelector("div.message span.message-system-body")).isEmpty()) {
-            System.out.println("System message");
-            return null;
+            final String systemText = msgElement.findElement(By.cssSelector("span.hidden-token span.emojitext")).getText();
+            return new Message(systemText, null, "", MessageType.SYSTEM);
         }
+
+        //Get message text, timestamp and child elements
         String text = msgElement.findElement(By.cssSelector("div.message div.bubble div.message-text span.emojitext")).getText();
         String timestamp = msgElement.findElement(By.cssSelector(".message-datetime")).getText();
         List<WebElement> children = null; //TODO: Find messages child elements such as links or emoticons
 
-        return new Message(text, children, timestamp);
+        //Determine if message is incoming or outgoing
+        if (!msgElement.findElements(By.cssSelector("div.message-out")).isEmpty())
+            return new Message(text, children, timestamp, MessageType.OUT);
+        else
+            return new Message(text, children, timestamp, MessageType.IN);
+    }
+
+    public enum MessageType {
+        IN,
+        OUT,
+        SYSTEM
     }
 }
