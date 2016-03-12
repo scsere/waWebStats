@@ -19,7 +19,7 @@ public class EchoServer {
         webStats.initFirefox();
 
         //Fetch all available contacts
-        List<Contact> contacts = webStats.getContacts();
+        List<Contact> contacts = webStats.getWebAppFrame().getContacts();
         //Print all contacts and read user choice
         Utils.printContacts(contacts);
         int selectedContactIndex = Utils.selectContact();
@@ -27,7 +27,7 @@ public class EchoServer {
         System.out.println("Selected: " + contacts.get(selectedContactIndex).getContactName());
 
         //Open chat window for selected contact
-        final ChatFrame chatFrame = webStats.getChatFrameForContact(contacts.get(selectedContactIndex));
+        final ChatFrame chatFrame = webStats.getWebAppFrame().getChatFrameForContact(contacts.get(selectedContactIndex));
 
         chatFrame.registerChatListener(new ChatListener() {
             @Override

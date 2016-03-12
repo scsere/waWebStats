@@ -8,7 +8,7 @@ import java.util.List;
  */
 public abstract class Watcher<T extends Listenable<L>, L> extends Thread {
 
-    public static final int DEFAULT_INTERVAL = 5000;
+    public static final int DEFAULT_INTERVAL = 250;
 
     protected T parent;
     protected int interval;
@@ -23,8 +23,10 @@ public abstract class Watcher<T extends Listenable<L>, L> extends Thread {
 
     @Override
     public void run() {
-        performChecks(parent.getListener());
-        waitInterval();
+        while (active) {
+            performChecks(parent.getListeners());
+            waitInterval();
+        }
     }
 
     protected abstract void performChecks(List<L> listeners);

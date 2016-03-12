@@ -1,6 +1,7 @@
 package com.scsere.examples;
 
 import com.scsere.main.WaWebStats;
+import com.scsere.main.WhatsAppStatusListener;
 import com.scsere.main.chat.ChatFrame;
 import com.scsere.main.chat.ChatListener;
 import com.scsere.main.chat.Message;
@@ -25,15 +26,29 @@ public class Logger {
         webStats.initFirefox();
 
         //Fetch all available contacts
-        List<Contact> contacts = webStats.getContacts();
+        List<Contact> contacts = webStats.getWebAppFrame().getContacts();
         //Print all contacts and read user choice
         Utils.printContacts(contacts);
         int selectedContactIndex = Utils.selectContact();
 
         System.out.println("Selected: " + contacts.get(selectedContactIndex).getContactName());
 
+        webStats.addListener(new WhatsAppStatusListener() {
+            @Override
+            public void onWhatsappPhoneDisconnect() {
+            }
+
+            @Override
+            public void onWhatsappBatteryLow() {
+            }
+
+            @Override
+            public void onWhatsappRequestedByOtherApplication() {
+            }
+        });
+
         //Open chat window for selected contact
-        ChatFrame chatFrame = webStats.getChatFrameForContact(contacts.get(selectedContactIndex));
+        ChatFrame chatFrame = webStats.getWebAppFrame().getChatFrameForContact(contacts.get(selectedContactIndex));
 
         chatFrame.registerChatListener(new ChatListener() {
             @Override
