@@ -46,6 +46,7 @@ public class Logger {
 
             @Override
             public void onWhatsappRequestedByOtherApplication() {
+                System.out.println("Another application requested Whatsapp-Web");
             }
         });
 
