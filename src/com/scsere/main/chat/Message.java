@@ -15,12 +15,21 @@ public class Message {
     private List<WebElement> childElements;
     private String timestamp;
     private MessageType type;
+    private String author;
 
     public Message(String text, List<WebElement> childElements, String timestamp, MessageType type) {
         this.text = text;
         this.childElements = childElements;
         this.timestamp = timestamp;
         this.type = type;
+    }
+
+    public Message(String text, List<WebElement> childElements, String timestamp, MessageType type, String author) {
+        this.text = text;
+        this.childElements = childElements;
+        this.timestamp = timestamp;
+        this.type = type;
+        this.author = author;
     }
 
     public String getText() {
@@ -45,6 +54,14 @@ public class Message {
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getAuthor() {
+        return author != null ? author : "N/A";
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public MessageType getType() {
@@ -94,10 +111,18 @@ public class Message {
         List<WebElement> children = null; //TODO: Find messages child elements such as links or emoticons
 
         //Determine if message is incoming or outgoing
+        MessageType type;
         if (!msgElement.findElements(By.cssSelector("div.message-out")).isEmpty())
-            return new Message(text, children, timestamp, MessageType.OUT);
+            type = MessageType.OUT;
         else
-            return new Message(text, children, timestamp, MessageType.IN);
+            type = MessageType.IN;
+
+        //Check if it's a group message if that's the case set autthor
+        List<WebElement> authorElement = msgElement.findElements(By.cssSelector("h3.message-author"));
+        if (!authorElement.isEmpty())
+            return new Message(text, children, timestamp, type, authorElement.get(0).findElement(By.cssSelector("span.emojitext")).getText());
+        else
+            return new Message(text, children, timestamp, type);
     }
 
     public enum MessageType {

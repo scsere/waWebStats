@@ -30,6 +30,6 @@ public class ConversationPrinter {
         final List<Message> messageList = chatFrame.getMessages();
 
         for (Message message : messageList)
-            System.out.println(message.getType().toString()+"\tMsg:\t"+message.getText());
+            System.out.println(message.getType().toString()+"\tAuthor:\t"+message.getAuthor()+"\tMsg:\t"+message.getText());
     }
 }
