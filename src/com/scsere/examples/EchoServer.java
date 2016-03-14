@@ -43,8 +43,11 @@ public class EchoServer {
                 System.out.println("New incoming message: " + incomingMessage);
                 chatFrame.sendText(incomingMessage.getText());
             }
-        });
 
-        while (true) ;
+            @Override
+            public void onChatNotAvailable() {
+
+            }
+        });
     }
 }

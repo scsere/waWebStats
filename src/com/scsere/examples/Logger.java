@@ -69,8 +69,11 @@ public class Logger {
             public void onNewIncomingMessage(Message incomingMessage) {
                 System.out.println("New incoming message: " + incomingMessage);
             }
-        });
 
-        while (true) ;
+            @Override
+            public void onChatNotAvailable() {
+                System.err.println("Chat no longer available!");
+            }
+        });
     }
 }
