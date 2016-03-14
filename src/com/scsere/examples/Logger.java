@@ -53,7 +53,7 @@ public class Logger {
         //Open chat window for selected contact
         ChatFrame chatFrame = webStats.getWebAppFrame().getChatFrameForContact(contacts.get(selectedContactIndex));
 
-        chatFrame.registerChatListener(new ChatListener() {
+        chatFrame.addListener(new ChatListener() {
             @Override
             public void onStatusChanged(String newStatus) {
                 System.out.println("Status changed: " + newStatus);

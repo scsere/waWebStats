@@ -29,7 +29,7 @@ public class EchoServer {
         //Open chat window for selected contact
         final ChatFrame chatFrame = webStats.getWebAppFrame().getChatFrameForContact(contacts.get(selectedContactIndex));
 
-        chatFrame.registerChatListener(new ChatListener() {
+        chatFrame.addListener(new ChatListener() {
             @Override
             public void onStatusChanged(String newStatus) {
             }
