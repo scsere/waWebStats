@@ -9,10 +9,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.firefox.internal.ProfilesIni;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.util.List;
 
 /**
  * Created by scsere on 11/03/16.
@@ -52,8 +51,10 @@ public class WaWebStats extends Listenable<WhatsAppStatusListener> {
         waitUntilAppReady();
     }
 
-    public WebAppFrame getWebAppFrame() {
-        return appFrame;
+    public void scrollToElement(WebElement element, int xOffset, int yOffset){
+        Actions action = new Actions(driver);
+        action.moveToElement(element, xOffset, yOffset);
+        action.perform();
     }
 
     private void waitUntilAppReady() {
@@ -81,6 +82,10 @@ public class WaWebStats extends Listenable<WhatsAppStatusListener> {
                 System.exit(1);
             }
         }
+    }
+
+    public WebAppFrame getWebAppFrame() {
+        return appFrame;
     }
 
     @Override
