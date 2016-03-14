@@ -11,25 +11,36 @@ import java.util.List;
  */
 public class Message {
 
+    private WebElement element;
     private String text;
     private List<WebElement> childElements;
     private String timestamp;
     private MessageType type;
     private String author;
 
-    public Message(String text, List<WebElement> childElements, String timestamp, MessageType type) {
+    public Message(WebElement element, String text, List<WebElement> childElements, String timestamp, MessageType type) {
+        this.element =element;
         this.text = text;
         this.childElements = childElements;
         this.timestamp = timestamp;
         this.type = type;
     }
 
-    public Message(String text, List<WebElement> childElements, String timestamp, MessageType type, String author) {
+    public Message(WebElement element, String text, List<WebElement> childElements, String timestamp, MessageType type, String author) {
+        this.element =element;
         this.text = text;
         this.childElements = childElements;
         this.timestamp = timestamp;
         this.type = type;
         this.author = author;
+    }
+
+    public WebElement getElement() {
+        return element;
+    }
+
+    public void setElement(WebElement element) {
+        this.element = element;
     }
 
     public String getText() {
@@ -100,7 +111,7 @@ public class Message {
         //Check if it's a system message without text
         if (!msgElement.findElements(By.cssSelector("div.message span.message-system-body")).isEmpty()) {
             final String systemText = msgElement.findElement(By.cssSelector("span.hidden-token span.emojitext")).getText();
-            return new Message(systemText, null, "", MessageType.SYSTEM);
+            return new Message(msgElement, systemText, null, "", MessageType.SYSTEM);
         }
 
         //Get message text, timestamp and child elements
@@ -120,9 +131,9 @@ public class Message {
         //Check if it's a group message if that's the case set autthor
         List<WebElement> authorElement = msgElement.findElements(By.cssSelector("h3.message-author"));
         if (!authorElement.isEmpty())
-            return new Message(text, children, timestamp, type, authorElement.get(0).findElement(By.cssSelector("span.emojitext")).getText());
+            return new Message(msgElement, text, children, timestamp, type, authorElement.get(0).findElement(By.cssSelector("span.emojitext")).getText());
         else
-            return new Message(text, children, timestamp, type);
+            return new Message(msgElement, text, children, timestamp, type);
     }
 
     public enum MessageType {
