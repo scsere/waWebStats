@@ -49,6 +49,8 @@ public class ChatWatcher extends Thread {
                 }
             } catch (StaleElementReferenceException e) {
                 setActive(false);
+                for (ChatListener listener : parent.listeners)
+                    listener.onChatNotAvailable();
                 System.err.println("Lost chatFrame reference (changed chat?)");
             }
         }
@@ -70,7 +72,7 @@ public class ChatWatcher extends Thread {
     private void checkStatus() {
         final WebElement statusElement = parent.getStatusElement();
         //In case status element disappeared
-        if (statusElement == null){
+        if (statusElement == null) {
             lastState = null;
             return;
         }

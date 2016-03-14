@@ -11,4 +11,6 @@ public interface ChatListener {
     void onNewMessage(Message message);
 
     void onNewIncomingMessage(Message incomingMessage);
+
+    void onChatNotAvailable();
 }
