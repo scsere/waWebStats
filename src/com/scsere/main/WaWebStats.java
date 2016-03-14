@@ -3,6 +3,7 @@ package com.scsere.main;
 import com.scsere.main.WebApp.WebAppFrame;
 import com.scsere.main.WebApp.WebAppWatcher;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -47,7 +48,7 @@ public class WaWebStats extends Listenable<WhatsAppStatusListener> {
         //Go to WA-web
         driver.get(WA_WEB_URL);
 
-        //Wait until web app is ready
+        //Wait until web app is available
         waitUntilAppReady();
     }
 
@@ -56,20 +57,30 @@ public class WaWebStats extends Listenable<WhatsAppStatusListener> {
     }
 
     private void waitUntilAppReady() {
-        //TODO: Directly wait for appframe element and remove second statement
         WebElement element = (new WebDriverWait(driver, 20))
-                .until(ExpectedConditions.elementToBeClickable(By.className("pane-list-user")));
+                .until(ExpectedConditions.presenceOfElementLocated(By.id("app")));
         if (element == null) {
             System.err.println("Could not reach whatsapp-web within 20sec");
             System.exit(1);
         }
+        //Wait until web app is ready to use
+        waitUntilReady();
+        appFrame = new WebAppFrame(element);
+    }
 
-        final List<WebElement> applicationFrameElement = driver.findElements(By.id("app"));
-        if (applicationFrameElement.isEmpty() || applicationFrameElement.size() > 1) {
-            System.err.println("Could not load application frame. Found "+ applicationFrameElement.size() + " matching elements");
-            return;
+    private void waitUntilReady() {
+        WebElement element = null;
+        try {
+            element = (new WebDriverWait(driver, 20))
+                    .until(ExpectedConditions.elementToBeClickable(By.className("pane-list-user")));
+        } catch (TimeoutException e) {
         }
-        appFrame = new WebAppFrame(applicationFrameElement.get(0));
+        if (element == null) {
+            if (!driver.findElements(By.cssSelector("div.popup-container div.popup")).isEmpty()) {
+                System.err.println("Phone is not reachable");
+                System.exit(1);
+            }
+        }
     }
 
     @Override

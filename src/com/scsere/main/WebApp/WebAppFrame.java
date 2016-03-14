@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Viktor Gobbi on 12/03/16.
+ * Created by scsere on 12/03/16.
  * Project: waWebStats
  */
 public class WebAppFrame {

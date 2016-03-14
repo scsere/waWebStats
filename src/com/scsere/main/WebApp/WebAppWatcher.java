@@ -32,6 +32,7 @@ public class WebAppWatcher extends Watcher<WaWebStats, WhatsAppStatusListener> {
     protected void performChecks(List<WhatsAppStatusListener> listeners) {
         final WebElement webAppFrameElement = parent.getWebAppFrame().getWebAppFrameElement();
         //Search for elements indicating one of the states: requested by other app, disconnected or battery low
+        //TODO: Replace css selector, fits multiple popups
         final boolean requestedByOther = !webAppFrameElement.findElements(By.cssSelector("div.popup-container div.popup")).isEmpty();
         final boolean batteryLow = !webAppFrameElement.findElements(By.cssSelector("div.butterbar-battery")).isEmpty();
         final boolean phoneDisconnected = !webAppFrameElement.findElements(By.cssSelector("div.butterbar-phone")).isEmpty();
