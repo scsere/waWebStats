@@ -14,6 +14,9 @@ import java.util.List;
  */
 public class WebAppWatcher extends Watcher<WaWebStats, WhatsAppStatusListener> {
 
+    private boolean lastRequestedByOther = false;
+    private boolean lastBatteryLow = false;
+
     public WebAppWatcher(WaWebStats parent) {
         super(parent);
     }
@@ -26,12 +29,21 @@ public class WebAppWatcher extends Watcher<WaWebStats, WhatsAppStatusListener> {
 
     @Override
     protected void performChecks(List<WhatsAppStatusListener> listeners) {
-        //TODO: Only trigger events once
         final WebElement webAppFrameElement = parent.getWebAppFrame().getWebAppFrameElement();
         final boolean requestedByOther = !webAppFrameElement.findElements(By.cssSelector("div.popup-container div.popup")).isEmpty();
-            for (WhatsAppStatusListener listener : listeners) {
-                if (requestedByOther)
-                    listener.onWhatsappRequestedByOtherApplication();
+        final boolean batteryLow = !webAppFrameElement.findElements(By.cssSelector("div.butterbar-battery")).isEmpty();
+        for (WhatsAppStatusListener listener : listeners) {
+            if (requestedByOther && requestedByOther != lastRequestedByOther) {
+                listener.onWhatsappRequestedByOtherApplication();
+                lastRequestedByOther = requestedByOther;
+            } else if (requestedByOther != lastRequestedByOther)
+                lastRequestedByOther = requestedByOther;
+
+            if (batteryLow && lastBatteryLow != batteryLow) {
+                listener.onWhatsappBatteryLow();
+                lastBatteryLow = batteryLow;
+            } else if (batteryLow != lastBatteryLow)
+                lastBatteryLow = batteryLow;
         }
     }
 }

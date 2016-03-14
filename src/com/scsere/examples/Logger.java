@@ -36,10 +36,12 @@ public class Logger {
         webStats.addListener(new WhatsAppStatusListener() {
             @Override
             public void onWhatsappPhoneDisconnect() {
+                System.err.println("Phone disconnected");
             }
 
             @Override
             public void onWhatsappBatteryLow() {
+                System.err.println("Phone battery low");
             }
 
             @Override
