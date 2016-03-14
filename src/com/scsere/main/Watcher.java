@@ -17,7 +17,7 @@ public abstract class Watcher<T extends Listenable<L>, L> extends Thread {
     public Watcher(T parent) {
         this.parent = parent;
         this.interval = DEFAULT_INTERVAL;
-        this.setDaemon(true);
+        this.setDaemon(false);
         this.start();
     }
 
