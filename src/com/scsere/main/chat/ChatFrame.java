@@ -1,5 +1,6 @@
 package com.scsere.main.chat;
 
+import com.scsere.main.Listenable;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -10,10 +11,8 @@ import java.util.List;
  * Created by scsere on 10/03/16.
  * Project: waWebStats
  */
-public class ChatFrame {
+public class ChatFrame extends Listenable<ChatListener> {
     private WebElement frame;
-    private ChatWatcher chatWatcher;
-    protected List<ChatListener> listeners = new ArrayList<>();
 
     public ChatFrame(WebElement frame) {
         this.frame = frame;
@@ -23,48 +22,17 @@ public class ChatFrame {
         return frame.findElement(By.cssSelector("div.chat-status:nth-child(2)")).getText();
     }
 
-    public WebElement getStatusElement(){
+    public WebElement getStatusElement() {
         List<WebElement> elements = frame.findElements(By.cssSelector("div.chat-status:nth-child(2)"));
         return elements.isEmpty() ? null : elements.get(0);
     }
 
-    private void startChatWatcher() {
-        chatWatcher = new ChatWatcher(this);
-    }
-
-    private void stopChatWatcher() {
-        chatWatcher.setActive(false);
-    }
-
-    public void registerChatListener(ChatListener listener) {
-        //Check if it's the first listener
-        if (listeners.isEmpty()) {
-            listeners.add(listener);
-            startChatWatcher();
-        }
-    }
-
-    public boolean detachChatListener(ChatListener listener) {
-        //Check if listener is registered
-        if (!listeners.contains(listener))
-            return false;
-
-        //Remove the listener
-        listeners.remove(listener);
-
-        //Check if it was the last attached listener
-        if (listeners.isEmpty())
-            stopChatWatcher();
-
-        return true;
-    }
-
-    public boolean sendText(String textToSend){
+    public boolean sendText(String textToSend) {
         //Find input element
         final List<WebElement> inputElements = frame.findElements(By.cssSelector("div.input"));
         if (inputElements.isEmpty())
             return false;
-        inputElements.get(0).sendKeys(textToSend+ "\n");
+        inputElements.get(0).sendKeys(textToSend + "\n");
         return true;
     }
 
@@ -85,5 +53,16 @@ public class ChatFrame {
 
     public void setFrame(WebElement frame) {
         this.frame = frame;
+    }
+
+    @Override
+    protected void startWatcher() {
+        watcher = new ChatWatcher(this);
+    }
+
+    @Override
+    protected void stopWatcher() {
+        watcher.setActive(false);
+        watcher = null;
     }
 }

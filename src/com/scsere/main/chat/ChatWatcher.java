@@ -1,5 +1,6 @@
 package com.scsere.main.chat;
 
+import com.scsere.main.Watcher;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 
@@ -9,29 +10,13 @@ import java.util.List;
  * Created by scsere on 10/03/16.
  * Project: waWebStats
  */
-public class ChatWatcher extends Thread {
+public class ChatWatcher extends Watcher<ChatFrame, ChatListener> {
 
-    public final int DEFAULT_INTERVAL = 500;
-
-    private ChatFrame parent;
-    private int interval = DEFAULT_INTERVAL;
-    private volatile boolean active = true;
-
-    private String lastState;
+    private String lastState = "";
     private Message lastMessage = null;
 
     public ChatWatcher(ChatFrame parent) {
-        super();
-        this.parent = parent;
-
-        //Init "last" fields
-        lastState = "";
-        lastMessage = parent.getMessages().get(parent.getMessages().size() - 1);
-
-        assert lastMessage != null;
-
-        this.setDaemon(true);
-        this.start();
+        super(parent);
     }
 
     @Override
@@ -49,18 +34,37 @@ public class ChatWatcher extends Thread {
                 }
             } catch (StaleElementReferenceException e) {
                 setActive(false);
-                for (ChatListener listener : parent.listeners)
+                for (ChatListener listener : parent.getListeners())
                     listener.onChatNotAvailable();
                 System.err.println("Lost chatFrame reference (changed chat?)");
             }
         }
     }
 
+    @Override
+    protected void performChecks(List<ChatListener> listeners) {
+        try {
+            checkMessages();
+            checkStatus();
+        } catch (StaleElementReferenceException e) {
+            setActive(false);
+            for (ChatListener listener : parent.getListeners())
+                listener.onChatNotAvailable();
+            System.err.println("Lost chatFrame reference (changed chat?)");
+        }
+    }
+
     private void checkMessages() {
+        //If lastMessage is not initialized, load lastMessage
+        if (lastMessage == null) {
+            lastMessage = parent.getMessages().get(parent.getMessages().size() - 1);
+            assert lastMessage != null;
+            return;
+        }
         final List<Message> messageList = parent.getMessages();
         final Message currentLastMessage = messageList.get(messageList.size() - 1);
         if (!lastMessage.equals(currentLastMessage)) {
-            for (ChatListener listener : parent.listeners) {
+            for (ChatListener listener : parent.getListeners()) {
                 listener.onNewMessage(currentLastMessage);
                 if (currentLastMessage.getType() == Message.MessageType.IN)
                     listener.onNewIncomingMessage(currentLastMessage);
@@ -80,25 +84,9 @@ public class ChatWatcher extends Thread {
 
         String currentText = statusElement.getText();
         if (!currentText.equals(lastState)) {
-            for (ChatListener listener : parent.listeners)
+            for (ChatListener listener : parent.getListeners())
                 listener.onStatusChanged(currentText);
             lastState = currentText;
         }
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public int getInterval() {
-        return interval;
-    }
-
-    public void setInterval(int interval) {
-        this.interval = interval;
-    }
-
-    public String getLastState() {
-        return lastState;
     }
 }
