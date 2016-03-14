@@ -14,6 +14,7 @@ classes/
 .idea/sqlDataSources.xml
 .idea/dynamic.xml
 .idea/uiDesigner.xml
+.idea/fileTemplates
 
 /.idea/sqldialects.xml
 /.idea/dataSources.local.xml
