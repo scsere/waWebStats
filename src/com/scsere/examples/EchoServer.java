@@ -19,7 +19,7 @@ public class EchoServer {
         webStats.initFirefox();
 
         //Fetch all available contacts
-        List<Contact> contacts = webStats.getWebAppFrame().getContactsFrame().getContacts();
+        List<Contact> contacts = webStats.getWebAppFrame().getContactsFrame().getRecentChatContacts();
         //Print all contacts and read user choice
         Utils.printContacts(contacts);
         int selectedContactIndex = Utils.selectContact();
