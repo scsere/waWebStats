@@ -17,6 +17,15 @@ public class ContactsWatcher extends Watcher<ContactsFrame, ContactsListener>{
 
     @Override
     protected void performChecks(List<ContactsListener> listeners) {
+        checkForUnreadMessages();
+        checkContactsOrder();
+    }
 
+    private void checkForUnreadMessages() {
+        //TODO
+    }
+
+    private void checkContactsOrder(){
+        //TODO (save contact with index 0 and compare each time)
     }
 }

@@ -5,4 +5,8 @@ package com.scsere.main.contacts;
  * Project: waWebStats
  */
 public interface ContactsListener {
+
+    void onUnreadMessageFromContact(Contact contact);
+
+    void onContactsOrderChange();
 }
