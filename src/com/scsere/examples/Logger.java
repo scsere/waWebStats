@@ -1,7 +1,7 @@
 package com.scsere.examples;
 
 import com.scsere.main.WaWebStats;
-import com.scsere.main.WhatsAppStatusListener;
+import com.scsere.main.WebApp.WhatsAppStatusListener;
 import com.scsere.main.chat.ChatFrame;
 import com.scsere.main.chat.ChatListener;
 import com.scsere.main.chat.Message;
