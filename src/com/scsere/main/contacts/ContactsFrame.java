@@ -66,7 +66,7 @@ public class ContactsFrame extends Listenable<ContactsListener> {
 
     public List<Contact> getContactsWithUnreadMessages() {
         List<Contact> result = new ArrayList<>();
-        List<Contact> recentContacts = getRecentChatContacts();
+        List<Contact> recentContacts = getRecentChatContacts();//TODO: Query all contacts not only recent   
         for (Contact contact : recentContacts) {
             final List<WebElement> unreadMessage = contact.getWebElement().findElements(By.cssSelector("span.icon-meta.unread-count"));
             if (!unreadMessage.isEmpty())
