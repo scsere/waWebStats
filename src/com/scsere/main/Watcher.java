@@ -14,11 +14,15 @@ public abstract class Watcher<T extends Listenable<L>, L> extends Thread {
     protected int interval;
     protected boolean active = true;
 
-    public Watcher(T parent) {
+    public Watcher(T parent, boolean daemon){
         this.parent = parent;
         this.interval = DEFAULT_INTERVAL;
-        this.setDaemon(false);
+        this.setDaemon(daemon);
         this.start();
+    }
+
+    public Watcher(T parent) {
+        this(parent, false);
     }
 
     @Override
