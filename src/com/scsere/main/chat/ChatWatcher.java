@@ -20,28 +20,6 @@ public class ChatWatcher extends Watcher<ChatFrame, ChatListener> {
     }
 
     @Override
-    public void run() {
-        while (active) {
-            try {
-
-                checkStatus();
-                checkMessages();
-
-                try {
-                    Thread.sleep(interval);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            } catch (StaleElementReferenceException e) {
-                setActive(false);
-                for (ChatListener listener : parent.getListeners())
-                    listener.onChatNotAvailable();
-                System.err.println("Lost chatFrame reference (changed chat?)");
-            }
-        }
-    }
-
-    @Override
     protected void performChecks(List<ChatListener> listeners) {
         try {
             checkMessages();
