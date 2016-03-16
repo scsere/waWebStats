@@ -2,6 +2,7 @@ package com.scsere.main.WebApp;
 
 import com.scsere.main.chat.ChatFrame;
 import com.scsere.main.contacts.Contact;
+import com.scsere.main.contacts.ContactsFrame;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -48,27 +49,19 @@ public class WebAppFrame {
         this.webAppFrameElement = webAppFrameElement;
     }
 
-    public List<Contact> getContacts() {
-        validateApplicationFrame();
-        if (!ready) {
-            System.err.println("Web application not ready");
-            return null;
-        }
-
-        //TODO: Scroll down to trigger reload of contact list
-        List<Contact> contacts = new ArrayList<>();
-        for (WebElement element : webAppFrameElement.findElements(By.cssSelector(".infinite-list-item, .infinite-list-item-transition")))
-            contacts.add(new Contact(element));//TODO: Check if list is not empty
-        return contacts;
-    }
-
     public void openChatWindowForContact(Contact contact) {
         if (contact != null)
             contact.getWebElement().click();
     }
 
     public ChatFrame getChatFrameForContact(Contact contact) {
+        validateApplicationFrame();
         openChatWindowForContact(contact);
         return new ChatFrame(webAppFrameElement.findElement(By.id("main")));
+    }
+
+    public ContactsFrame getContactsFrame(){
+        validateApplicationFrame();
+        return new ContactsFrame(webAppFrameElement.findElement(By.id("pane-side")));
     }
 }
