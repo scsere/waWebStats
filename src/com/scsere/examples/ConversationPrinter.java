@@ -18,7 +18,7 @@ public class ConversationPrinter {
         webStats.initFirefox();
 
         //Fetch all available contacts
-        List<Contact> contacts = webStats.getWebAppFrame().getContacts();
+        List<Contact> contacts = webStats.getWebAppFrame().getContactsFrame().getContacts();
         //Print all contacts and read user choice
         Utils.printContacts(contacts);
         final int selectedContactIndex = Utils.selectContact();

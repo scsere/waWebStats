@@ -26,7 +26,7 @@ public class Logger {
         webStats.initFirefox();
 
         //Fetch all available contacts
-        List<Contact> contacts = webStats.getWebAppFrame().getContacts();
+        List<Contact> contacts = webStats.getWebAppFrame().getContactsFrame().getContacts();
         //Print all contacts and read user choice
         Utils.printContacts(contacts);
         int selectedContactIndex = Utils.selectContact();
