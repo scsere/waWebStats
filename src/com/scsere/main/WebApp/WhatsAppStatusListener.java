@@ -1,4 +1,4 @@
-package com.scsere.main;
+package com.scsere.main.WebApp;
 
 /**
  * Created by scsere on 11/03/16.

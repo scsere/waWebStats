@@ -2,7 +2,6 @@ package com.scsere.main.WebApp;
 
 import com.scsere.main.WaWebStats;
 import com.scsere.main.Watcher;
-import com.scsere.main.WhatsAppStatusListener;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 

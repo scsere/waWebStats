@@ -2,6 +2,7 @@ package com.scsere.main;
 
 import com.scsere.main.WebApp.WebAppFrame;
 import com.scsere.main.WebApp.WebAppWatcher;
+import com.scsere.main.WebApp.WhatsAppStatusListener;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
