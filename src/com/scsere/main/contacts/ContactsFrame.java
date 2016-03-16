@@ -1,6 +1,7 @@
 package com.scsere.main.contacts;
 
 import com.scsere.main.Listenable;
+import com.scsere.main.WaWebStats;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -22,8 +23,12 @@ public class ContactsFrame extends Listenable<ContactsListener>{
     public List<Contact> getContacts() {
         //TODO: Scroll down to trigger reload of contact list
         List<Contact> contacts = new ArrayList<>();
-        for (WebElement element : frame.findElements(By.cssSelector(".infinite-list-item, .infinite-list-item-transition")))
-            contacts.add(new Contact(element));//TODO: Check if list is not empty
+        final List<WebElement> contactElements = frame.findElements(By.cssSelector(".infinite-list-item, .infinite-list-item-transition"));
+        //If there are no contacts return null
+        if (contactElements.isEmpty())
+            return null;
+        for (WebElement element : contactElements)
+            contacts.add(new Contact(element));
         return contacts;
     }
 
