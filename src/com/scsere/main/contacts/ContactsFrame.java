@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -32,25 +33,29 @@ public class ContactsFrame extends Listenable<ContactsListener>{
     }
 
     public List<Contact> getAllChatContacts(){
+        //TODO: This one can be improved A LOT, it takes ages to load all contacts if there are more than 20 or 30
         List<Contact> contacts = new ArrayList<>();
         List<WebElement> contactElements = null;
         List<WebElement> moreContactElements = null;
         do {
+            contacts.clear();
             contactElements = frame.findElements(By.cssSelector(".infinite-list-item, .infinite-list-item-transition"));
             //If there are no contacts return null
             if (contactElements.isEmpty())
                 return null;
+
+            for (WebElement element : contactElements)
+                contacts.add(new Contact(element));
+            Collections.sort(contacts);
             //Scroll down and sleep for 300 milliseconds
-            WaWebStats.scrollToElement(contactElements.get(contactElements.size()-1), 0, -40);
+            WaWebStats.scrollToElement(contacts.get(contacts.size()-1).getWebElement(), 0, -40);
             try {
-                Thread.sleep(300);
+                Thread.sleep(50);//TODO Replace with driverWait, constants take way too long
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             moreContactElements  = frame.findElements(By.cssSelector(".infinite-list-item, .infinite-list-item-transition"));
         }while (moreContactElements.size() > contactElements.size());
-        for (WebElement element : moreContactElements)
-            contacts.add(new Contact(element));
         return contacts;
     }
 
