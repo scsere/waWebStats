@@ -23,7 +23,7 @@ public class WaWebStats extends Listenable<WhatsAppStatusListener> {
     public static final String WA_WEB_URL = "https://web.whatsapp.com/";
     public static String PROFILE_NAME = "SELENIUM";
 
-    private WebDriver driver;
+    private static WebDriver driver;
     private WebAppFrame appFrame;
 
     public WaWebStats() {
@@ -52,7 +52,11 @@ public class WaWebStats extends Listenable<WhatsAppStatusListener> {
         waitUntilAppReady();
     }
 
-    public void scrollToElement(WebElement element, int xOffset, int yOffset){
+    public static void scrollToElement(WebElement element, int xOffset, int yOffset){
+        if (driver == null) {
+            System.err.println("Cannot use method, no driver available!");
+            return;
+        }
         Actions action = new Actions(driver);
         action.moveToElement(element, xOffset, yOffset);
         action.perform();
