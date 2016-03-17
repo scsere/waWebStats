@@ -12,15 +12,16 @@ import java.util.regex.Pattern;
  */
 public class Contact implements Comparable<Contact> {
     private WebElement webElement;
+    public int index;
 
     public Contact(WebElement webElement) {
         this.webElement = webElement;
+        this.index = getChatIndex();
     }
 
     public int getChatIndex() {
         final String style = webElement.getAttribute("style");
-        final Pattern pattern = Pattern.compile("(\\d+)%");
-        final Matcher matcher = pattern.matcher(style);
+        final Matcher matcher = Pattern.compile("(\\d+)%").matcher(style);
         if (matcher.find())
             return Integer.parseInt(matcher.group(1)) / 100;
         return -1;
@@ -48,9 +49,9 @@ public class Contact implements Comparable<Contact> {
 
     @Override
     public int compareTo(Contact contact) {
-        if (this.getChatIndex() > contact.getChatIndex())
+        if (this.index > contact.index)
             return 1;
-        if (this.getChatIndex() < contact.getChatIndex())
+        if (this.index < contact.index)
             return -1;
         return 0;
     }
