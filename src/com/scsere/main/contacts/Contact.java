@@ -13,30 +13,43 @@ import java.util.regex.Pattern;
 public class Contact implements Comparable<Contact> {
     private WebElement webElement;
     public int index;
+    public String name;
+    public String meta;
 
     public Contact(WebElement webElement) {
         this.webElement = webElement;
-        this.index = getChatIndex();
+        fetchDataFromWebElement();
     }
 
     public int getChatIndex() {
-        final String style = webElement.getAttribute("style");
-        final Matcher matcher = Pattern.compile("(\\d+)%").matcher(style);
-        if (matcher.find())
-            return Integer.parseInt(matcher.group(1)) / 100;
-        return -1;
+        return index;
     }
 
     public String getContactName() {
-        if (webElement != null)
-            return webElement.findElement(By.cssSelector(".chat-title")).getText();
-        return null;
+        return name;
     }
 
     public String getContactMeta() {
-        if (webElement != null)
-            return webElement.findElement(By.cssSelector(".chat-meta")).getText();
-        return null;
+        return meta;
+    }
+
+    public boolean fetchDataFromWebElement(){
+        if (webElement==null)
+            return false;
+
+        //Get chat index
+        final String style = webElement.getAttribute("style");
+        final Matcher matcher = Pattern.compile("(\\d+)%").matcher(style);
+        this.index = -1;
+        if (matcher.find())
+            this.index =  Integer.parseInt(matcher.group(1)) / 100;
+
+        //Get contact name
+        this.name = webElement.findElement(By.cssSelector(".chat-title")).getText();
+
+        //Get contact meta
+        this.meta = webElement.findElement(By.cssSelector(".chat-meta")).getText();
+        return true;
     }
 
     public WebElement getWebElement() {
