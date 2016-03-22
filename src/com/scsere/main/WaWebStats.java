@@ -62,6 +62,10 @@ public class WaWebStats extends Listenable<WhatsAppStatusListener> {
         action.perform();
     }
 
+    public void shutdownDriver(){
+        driver.quit();
+    }
+
     private void waitUntilAppReady() {
         WebElement element = (new WebDriverWait(driver, 20))
                 .until(ExpectedConditions.presenceOfElementLocated(By.id("app")));
