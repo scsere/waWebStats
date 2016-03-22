@@ -36,6 +36,7 @@ For example programs see the com.scsere.examples package:
 + EchoServer.java
 + Logger.java
 + ConversationPrinter.java
++ WaCli.java
 
 #### IntelliJ-Idea
 To run the example programs first build the artifacts then navigate to out/artifacts/\<artifact name\> (be sure to configure a profile in your browser first) and run:
