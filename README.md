@@ -1,3 +1,4 @@
+# [This project is no longer under active development!]
 # waWebStats
 
 API written in java to interact with the Whatsapp web client using Selenium WebDriver.
